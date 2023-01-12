@@ -1696,14 +1696,16 @@ def run_model(
         normal_msg[idx] = s.lower()
 
     # Check to make sure that program and namefile exist
-    exe = which(exe_name)
-    if exe is None:
-        if exe_name.lower().endswith(".exe"):
-            # try removing .exe suffix
-            exe = which(exe_name[:-4])
-    if exe is None:
-        # try abspath
-        exe = which(os.path.abspath(exe_name))
+    if os.path.dirname(exe_name) == "":
+        exe = which(exe_name)
+        if exe is None:
+            if exe_name.lower().endswith(".exe"):
+                # try removing .exe suffix
+                exe = which(exe_name[:-4])
+                if exe is not None:
+                    exe_name = exe_name[:-4]
+    else:
+        exe = os.path.abspath(exe_name)
     if exe is None:
         raise Exception(
             f"The program {exe_name} does not exist or is not executable."
