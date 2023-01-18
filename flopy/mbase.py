@@ -1704,16 +1704,22 @@ def run_model(
                 exe = which(exe_name[:-4])
                 if exe is not None:
                     exe_name = exe_name[:-4]
+        if exe is None:
+            raise Exception(
+                f"The program {exe_name} does not exist or is not executable."
+            )
+        else:
+            if not silent:
+                print(
+                    f"FloPy is using the following executable to run the "
+                    f"model: {exe}"
+                )
     else:
-        exe = os.path.abspath(exe_name)
-    if exe is None:
-        raise Exception(
-            f"The program {exe_name} does not exist or is not executable."
-        )
-    else:
+        exe_name = os.path.abspath(exe_name)
         if not silent:
             print(
-                f"FloPy is using the following executable to run the model: {exe}"
+                f"FloPy is using the following executable to run the model: "
+                f"{exe_name}"
             )
 
     if namefile is not None:
